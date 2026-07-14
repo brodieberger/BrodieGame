@@ -21,15 +21,16 @@ Grid::Grid()
     }
 }
 
-Grid::~Grid() {
-	// TODO Auto-generated destructor stub
-}
-
-
 void Grid::printGrid(){
 	for (std::vector<Tile> row : grid){
-		for (Tile element : row){
-			std::cout << element.getTileId() << " ";
+		for (Tile tile : row){
+			if (tile.isOccupied()){
+				std::cout << "1 ";
+			}
+			else{
+				std::cout << "0 ";
+			}
+
 		}
 		std::cout << "\n";
 	}

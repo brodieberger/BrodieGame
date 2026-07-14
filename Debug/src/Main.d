@@ -5,6 +5,8 @@ src/Main.o: ../src/Main.cpp ../src/Game.h ../src/EnemyManager.h \
  ../src/factory/../GamePieces/GamePiece.h \
  ../src/factory/../GamePieces/../Action.h ../src/factory/PlayerFactory.h \
  ../src/Renderer.h ../src/Action.h ../src/Map/Grid.h ../src/Map/Tile.h \
+ ../src/Map/../GamePieces/GamePiece.h \
+ ../src/Map/../GamePieces/../Action.h \
  ../src/GameStates/GameStateContext.h ../src/GameStates/GameState.h \
  ../src/GameStates/../Renderer.h ../src/GameStates/../EnemyManager.h \
  ../src/GameStates/OverworldState.h ../src/GameStates/BattleState.h \
@@ -40,6 +42,10 @@ src/Main.o: ../src/Main.cpp ../src/Game.h ../src/EnemyManager.h \
 ../src/Map/Grid.h:
 
 ../src/Map/Tile.h:
+
+../src/Map/../GamePieces/GamePiece.h:
+
+../src/Map/../GamePieces/../Action.h:
 
 ../src/GameStates/GameStateContext.h:
 

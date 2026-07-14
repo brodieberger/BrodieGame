@@ -61,6 +61,9 @@ void Renderer::drawEnemies(std::vector<std::unique_ptr<GamePiece>>& enemies) {
     }
 }
 
-void Renderer::renderTiles(Grid grid){
-	DrawRectangle(100, 100, 500, 5, LIGHTGRAY);
+// TODO MAKE THIS RENDER
+void Renderer::renderTiles(Grid& grid){
+
+
+	grid.printGrid();
 }

@@ -7,6 +7,7 @@
 
 #ifndef TILE_H_
 #define TILE_H_
+#include "../GamePieces/GamePiece.h"
 
 enum class TileType
 {
@@ -26,11 +27,20 @@ public:
 	void setTileId(int tileId) {
 		tileID = tileId;
 	}
+	const bool isOccupied() const{
+		return !occupants.empty();
+	}
+	const std::vector<GamePiece*>& getOccupants() const {
+		return occupants;
+	}
+	void addOccupants(GamePiece* gamePiece) {
+		return occupants.emplace_back(gamePiece);
+	}
 
 private:
 	int tileID;
 	TileType tileType = TileType::Walkable;
-	bool isOccupied = false;
+	std::vector<GamePiece*> occupants;
 };
 
 #endif /* TILE_H_ */

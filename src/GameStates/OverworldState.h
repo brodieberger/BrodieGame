@@ -1,5 +1,5 @@
 /*
- * MenuState.h
+ * OverworldState.h
  *
  *  Created on: Jul 7, 2026
  *      Author: ASRCFH\bberger
@@ -12,7 +12,6 @@
 class OverworldState : public GameState {
 public:
 	OverworldState(EnemyManager& enemyManager, Renderer& renderer);
-	virtual ~OverworldState();
 
     void update() override;
     void render() override;

@@ -1,5 +1,5 @@
 /*
- * MenuState.cpp
+ * OverworldState.cpp
  *
  *  Created on: Jul 7, 2026
  *      Author: ASRCFH\bberger
@@ -16,23 +16,28 @@ OverworldState::OverworldState(
 	: GameState(enemyManager, renderer)
 {
 	renderer.setAlertText("Use the arrow keys to move!");
-}
-
-OverworldState::~OverworldState() {
+	renderer.renderTiles(grid);
+	auto& actualGrid = grid.getGrid();
+	actualGrid[2][2].addOccupants(enemyManager.getPlayer());
 
 }
 
 void OverworldState::update() {
+
+	//TODO for each enemy. Run their overworld update function.
+
+	renderer.renderTiles(grid);
 	incrementTurnCounter();
 };
 
 void OverworldState::render() {
 	renderer.setUpperText("Current Turn: " + std::to_string(getTurnCounter()));
 	renderer.setLevelText("Overworld");
-	renderer.renderTiles(grid);
 };
 
 void OverworldState::handleInput(int keyPressed) {
+	update();
 	render();
+
 };
 

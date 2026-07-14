@@ -52,7 +52,7 @@ public:
 	void buildAlertText();
 	void drawEnemies(std::vector<std::unique_ptr<GamePiece>>&);
 	void drawHud();
-	void renderTiles(Grid grid);
+	void renderTiles(Grid&);
 
 private:
 	std::string upperText;

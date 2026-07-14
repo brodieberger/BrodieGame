@@ -13,8 +13,14 @@
 class Grid {
 public:
 	Grid();
-	virtual ~Grid();
 	void printGrid();
+	const std::vector<std::vector<Tile> >& getGrid() const {
+		return grid;
+	}
+
+	std::vector<std::vector<Tile> >& getGrid() {
+		return grid;
+	}
 
 private:
 	std::vector<std::vector<Tile>> grid;
