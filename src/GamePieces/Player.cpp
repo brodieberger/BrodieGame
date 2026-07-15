@@ -8,8 +8,12 @@
 #include <iostream>
 #include "Player.h"
 
-Player::Player(std::string name, int HP)
-    : GamePiece(name, HP) {}
+Player::Player() : GamePiece()
+{
+	setPieceType(PieceType::Player);
+	setName("Player");
+	setHP(100);
+}
 
 Action Player::attack(GamePiece* target) {
 	Action action;
@@ -26,7 +30,7 @@ Action Player::receiveAttack()
 {
     Action action;
 
-    action.addReceiveAttack(this, 5, RED);
+    action.addReceiveAttack(this, 5);
     action.addMessage(this, "You have been attacked!\nYou have " + std::to_string(getHP() - 5) + " HP.", RED);
 
     return action;

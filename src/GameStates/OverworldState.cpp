@@ -6,7 +6,6 @@
  */
 
 #include "OverworldState.h"
-
 #include <iostream>
 
 OverworldState::OverworldState(
@@ -17,9 +16,7 @@ OverworldState::OverworldState(
 {
 	renderer.setAlertText("Use the arrow keys to move!");
 	renderer.renderTiles(grid);
-	auto& actualGrid = grid.getGrid();
-	actualGrid[2][2].addOccupants(enemyManager.getPlayer());
-
+	createEnemy();
 }
 
 void OverworldState::update() {
@@ -36,8 +33,54 @@ void OverworldState::render() {
 };
 
 void OverworldState::handleInput(int keyPressed) {
-	update();
-	render();
+	keyPressed = keyPressed - 262; //Convert to enum in header file.
+	Direction direction = static_cast<Direction>(keyPressed);
 
+	Tile* tileToMoveTo = handleMovement(enemyManager.getPlayer(), direction);
+
+	if (tileToMoveTo)
+	{
+	    grid.movePiece(enemyManager.getPlayer(), *tileToMoveTo);
+	    update();
+	}
+
+	for (auto& enemy : enemyManager.getEnemyList())
+	{
+	    if (!enemy->getIsAlive())
+	    {
+	        grid.removePiece(enemy.get());
+	    }
+	}
+
+	enemyManager.removeDeadEnemies();
+	render();
 };
 
+Tile* OverworldState::handleMovement(GamePiece* gamepiece, Direction direction)
+{
+    Coord newCoord = gamepiece->getCoord();
+
+    switch (direction)
+    {
+        case Direction::Up:    --newCoord.y; break;
+        case Direction::Down:  ++newCoord.y; break;
+        case Direction::Left:  --newCoord.x; break;
+        case Direction::Right: ++newCoord.x; break;
+    }
+
+    if (!grid.isValidCoord(newCoord))
+        return nullptr;
+
+    Tile& newTile = grid.getTileByCoords(newCoord);
+
+    if (newTile.getTileType() == TileType::NonWalkable)
+        return nullptr;
+
+    return &newTile;
+}
+
+void OverworldState::createEnemy(){
+	GamePiece* enemy = enemyManager.spawnEnemy();
+	Tile& tile = grid.getTileByCoords(enemy->getCoord());
+	grid.movePiece(enemy, tile);
+}

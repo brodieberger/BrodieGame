@@ -12,7 +12,7 @@
 
 class GamePieceFactory {
 public:
-    virtual std::unique_ptr<GamePiece> create(std::string name, int HP) const = 0;
+    virtual std::unique_ptr<GamePiece> create() const = 0;
     virtual ~GamePieceFactory() = default;
 };
 

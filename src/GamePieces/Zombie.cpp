@@ -8,8 +8,17 @@
 #include <iostream>
 #include "Zombie.h"
 
-Zombie::Zombie(std::string name, int HP)
-    : GamePiece(name, HP) {
+Zombie::Zombie()
+: GamePiece() {
+
+	Coord newCoord;
+	newCoord.x = 1;
+	newCoord.y = 1;
+	setCoord(newCoord);
+
+	setPieceType(PieceType::Zombie);
+	setName("Zombie");
+	setHP(10);
 	std::cout << "zombie spawned\n";
 }
 
@@ -29,7 +38,7 @@ Action Zombie::receiveAttack()
 {
     Action action;
 
-	action.addReceiveAttack(this, 5, GOLD);
+	action.addReceiveAttack(this, 5);
 
     if ((getHP()-5) > 0){
         action.addMessage(this, getName() + " has been attacked!\n5 Damage Dealt.", GOLD);

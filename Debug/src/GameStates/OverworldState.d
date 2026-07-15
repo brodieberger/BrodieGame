@@ -13,7 +13,8 @@ src/GameStates/OverworldState.o: ../src/GameStates/OverworldState.cpp \
  ../src/GameStates/../factory/GamePieceFactory.h \
  ../src/GameStates/../factory/../GamePieces/GamePiece.h \
  ../src/GameStates/../factory/../GamePieces/../Action.h \
- ../src/GameStates/../factory/PlayerFactory.h
+ ../src/GameStates/../factory/PlayerFactory.h \
+ ../src/GameStates/../GamePieces/GamePiece.h
 
 ../src/GameStates/OverworldState.h:
 
@@ -48,3 +49,5 @@ src/GameStates/OverworldState.o: ../src/GameStates/OverworldState.cpp \
 ../src/GameStates/../factory/../GamePieces/../Action.h:
 
 ../src/GameStates/../factory/PlayerFactory.h:
+
+../src/GameStates/../GamePieces/GamePiece.h:

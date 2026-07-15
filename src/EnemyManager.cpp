@@ -8,30 +8,36 @@
 #include "EnemyManager.h"
 #include <algorithm>
 
-EnemyManager::EnemyManager()
-{
+EnemyManager::EnemyManager(){
     playerFactory 	= std::make_unique<PlayerFactory>();
     enemyFactory 	= std::make_unique<EnemyFactory>();
-    player = playerFactory->create("Brodie", 150);
+    player = playerFactory->create();
 
-}
-
-EnemyManager::~EnemyManager()
-{
 }
 
 void EnemyManager::update() {
+
+}
+
+void EnemyManager::removeDeadEnemies()
+{
     enemyList.erase(
-        std::remove_if(enemyList.begin(), enemyList.end(),
-            [](const std::unique_ptr<GamePiece>& enemy) {
-                return enemy->getIsAlive() <= 0;
+        std::remove_if(
+            enemyList.begin(),
+            enemyList.end(),
+            [](const std::unique_ptr<GamePiece>& enemy)
+            {
+                return !enemy->getIsAlive();
             }),
         enemyList.end());
 }
 
-void EnemyManager::spawnEnemy(std::string name, int health)
+GamePiece* EnemyManager::spawnEnemy()
 {
-    auto enemy = enemyFactory->create(name, health);
+    auto enemy = enemyFactory->create();
+    GamePiece* ptr = enemy.get();
 
     enemyList.push_back(std::move(enemy));
+
+    return ptr;
 }

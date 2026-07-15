@@ -1,5 +1,5 @@
 /*
- * ZombieFactory.h
+ * EnemyFactory.h
  *
  *  Created on: Jul 6, 2026
  *      Author: ASRCFH\bberger
@@ -11,8 +11,7 @@
 
 class EnemyFactory : public GamePieceFactory {
 public:
-    std::unique_ptr<GamePiece> create(std::string name, int HP) const override;
+    std::unique_ptr<GamePiece> create() const override;
 };
-
 
 #endif /* FACTORY_ENEMYFACTORY_H_ */

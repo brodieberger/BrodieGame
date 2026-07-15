@@ -10,6 +10,6 @@
 #include "../GamePieces/Player.h"
 #include "EnemyFactory.h"
 
-std::unique_ptr<GamePiece> PlayerFactory::create(std::string name, int HP) const {
-    return std::make_unique<Player>(name, HP);
+std::unique_ptr<GamePiece> PlayerFactory::create() const {
+    return std::make_unique<Player>();
 }

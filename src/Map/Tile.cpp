@@ -7,12 +7,13 @@
 
 #include "Tile.h"
 
-Tile::Tile(int newTileID) {
-	tileID = newTileID;
-}
+Tile::Tile(int newTileID, Coord newCoord)
+    : tileID(newTileID), coord(newCoord)
+{}
 
-Tile::Tile() {
-	tileID = 0;
+Tile::Tile()
+    : tileID(-1)
+{
 }
 
 Tile::~Tile() {

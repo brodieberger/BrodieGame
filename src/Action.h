@@ -42,7 +42,7 @@ public:
     void addMessage(GamePiece* initiator, std::string newText, Color color);
     void addDeathMessage(std::string newText, Color color);
     void setOutlineColor(GamePiece* target, Color color);
-    void addReceiveAttack(GamePiece* target, int damage, Color color);
+    void addReceiveAttack(GamePiece* target, int damage);
     void addAttack(GamePiece* target, GamePiece* initiator, int damage);
 
     std::vector<ActionStep>& getSteps(){

@@ -5,33 +5,43 @@
  *      Author: ASRCFH\bberger
  */
 #include <string>
+#include <array>
 #include "../Action.h"
 
 #ifndef GAMEPIECE_H_
 #define GAMEPIECE_H_
 
-class Coord{
-private:
+enum class PieceType{
+	Unknown,
+	Player,
+	Zombie,
+};
+
+struct Coord{
 	int x;
 	int y;
 };
 
 class GamePiece{
 private:
-	std::string m_Name;
+	PieceType pieceType;
+	std::string name;
 	int m_HP;
 	Coord coord;
 	bool isAlive {true};
 	Color outlineColor = BLACK;
 
 public:
-    GamePiece(std::string name, int HP);
+    GamePiece();
 	virtual ~GamePiece() = default;
 	virtual Action attack(GamePiece* target) = 0;
 	virtual Action receiveAttack() = 0;
 
-	std::string getName() const{
-		return m_Name;
+	PieceType getPieceType() const{
+		return pieceType;
+	}
+	void setPieceType(PieceType pieceType) {
+		this->pieceType = pieceType;
 	}
 	int getHP() const{
 		return m_HP;
@@ -50,6 +60,18 @@ public:
 	}
 	void setOutlineColor(Color color){
 		outlineColor = color;
+	}
+	Coord getCoord() const {
+		return coord;
+	}
+	void setCoord(Coord coord) {
+		this->coord = coord;
+	}
+	const std::string& getName() const {
+		return name;
+	}
+	void setName(const std::string &name) {
+		this->name = name;
 	}
 };
 std::ostream& operator<<(std::ostream& os, const GamePiece& p);

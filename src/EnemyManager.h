@@ -17,7 +17,7 @@
 class EnemyManager {
 public:
     EnemyManager();
-    ~EnemyManager();
+    ~EnemyManager() = default;
 
     std::vector<std::unique_ptr<GamePiece>>& getEnemyList()
     {
@@ -26,8 +26,8 @@ public:
     GamePiece* getPlayer(){
     	return player.get();
     }
-
-    void spawnEnemy(std::string name, int health);
+    void removeDeadEnemies();
+    GamePiece* spawnEnemy();
     void update();
 
 private:

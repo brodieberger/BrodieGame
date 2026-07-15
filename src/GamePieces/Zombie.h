@@ -12,7 +12,7 @@
 
 class Zombie : public GamePiece{
 public:
-	Zombie(std::string name, int HP);
+	Zombie();
 	Action attack(GamePiece* target) override;
 	Action receiveAttack() override;
 };

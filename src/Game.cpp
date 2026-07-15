@@ -69,7 +69,7 @@ void Game::handleInput()
     if (IsKeyPressed(KEY_Z)) {
 
         if (enemyManager->getEnemyList().size() < MAX_ENEMIES) {
-            enemyManager->spawnEnemy("Zombie", 10);
+            enemyManager->spawnEnemy();
         }
         else {
             std::cout << "Enemy List full!\n";

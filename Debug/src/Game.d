@@ -9,11 +9,11 @@ src/Game.o: ../src/Game.cpp ../src/Game.h ../src/EnemyManager.h \
  ../src/Map/../GamePieces/../Action.h \
  ../src/GameStates/GameStateContext.h ../src/GameStates/GameState.h \
  ../src/GameStates/../Renderer.h ../src/GameStates/../EnemyManager.h \
- ../src/GameStates/OverworldState.h ../src/GameStates/BattleState.h \
+ ../src/GameStates/OverworldState.h \
  ../src/GameStates/../GamePieces/GamePiece.h \
  ../src/GameStates/../GamePieces/../Action.h \
- ../src/GameStates/../ActionProcessor.h ../src/GameStates/../Action.h \
- ../src/ActionProcessor.h
+ ../src/GameStates/BattleState.h ../src/GameStates/../ActionProcessor.h \
+ ../src/GameStates/../Action.h ../src/ActionProcessor.h
 
 ../src/Game.h:
 
@@ -57,11 +57,11 @@ src/Game.o: ../src/Game.cpp ../src/Game.h ../src/EnemyManager.h \
 
 ../src/GameStates/OverworldState.h:
 
-../src/GameStates/BattleState.h:
-
 ../src/GameStates/../GamePieces/GamePiece.h:
 
 ../src/GameStates/../GamePieces/../Action.h:
+
+../src/GameStates/BattleState.h:
 
 ../src/GameStates/../ActionProcessor.h:
 

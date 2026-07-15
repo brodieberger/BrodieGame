@@ -8,10 +8,19 @@
 #include <iostream>
 #include "GamePiece.h"
 
-GamePiece::GamePiece(std::string name, int HP)
-	: m_Name{name}, m_HP{HP} {} // @suppress("Symbol is not resolved")
+GamePiece::GamePiece()
+    : pieceType(PieceType::Unknown),
+      m_HP(0),
+      coord{0, 0}
+{
+}
 
-std::ostream& operator<<(std::ostream& os, const GamePiece& p) {
-    os << "test";
-    return os;
+inline std::ostream& operator<<(std::ostream& os, PieceType type)
+{
+	switch (type)
+	{
+		case PieceType::Player: return os << "Player";
+		case PieceType::Zombie: return os << "Zombie";
+		default: return os << "Unknown";
+	}
 }

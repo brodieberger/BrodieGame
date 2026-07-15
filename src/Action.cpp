@@ -65,7 +65,7 @@ void Action::addAttack(GamePiece* target, GamePiece* initiator, int damage)
 }
 
 
-void Action::addReceiveAttack(GamePiece* target, int damage, Color color)
+void Action::addReceiveAttack(GamePiece* target, int damage)
 {
     ActionStep step;
 
@@ -73,7 +73,6 @@ void Action::addReceiveAttack(GamePiece* target, int damage, Color color)
     step.target = target;
     step.damage = damage;
     step.duration = 0;
-    step.color = color;
 
     steps.push_back(step);
 }

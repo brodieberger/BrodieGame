@@ -12,7 +12,7 @@
 
 class Player : public GamePiece{
 public:
-	Player(std::string name, int HP);
+	Player();
 	Action attack(GamePiece* target) override;
 	Action receiveAttack() override;
 };
