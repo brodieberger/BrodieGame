@@ -53,11 +53,12 @@ void OverworldState::handleInput(int keyPressed) {
 		createEnemy({1,1});
 	}
 
-	Tile* tileToMoveTo = handleMovement(gameWorld.getEnemyManager().getPlayer(), keyPressed);
+	GamePiece* player = gameWorld.getEnemyManager().getPlayer();
+	Tile* tileToMoveTo = handleMovement(player, keyPressed);
 
 	if (tileToMoveTo)
 	{
-		gameWorld.getGrid().movePiece(gameWorld.getEnemyManager().getPlayer(), *tileToMoveTo);
+		gameWorld.getGrid().movePiece(player, *tileToMoveTo);
 	    update();
 	}
 

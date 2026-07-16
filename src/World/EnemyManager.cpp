@@ -36,9 +36,9 @@ void EnemyManager::removeDeadEnemies()
 GamePiece* EnemyManager::spawnEnemy(Coord spawnCoord)
 {
     auto enemy = enemyFactory->create(spawnCoord);
-    GamePiece* ptr = enemy.get();
+    GamePiece* gamePiecePtr = enemy.get();
 
     enemyList.push_back(std::move(enemy));
 
-    return ptr;
+    return gamePiecePtr;
 }
