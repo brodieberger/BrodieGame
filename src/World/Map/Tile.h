@@ -7,7 +7,7 @@
 
 #ifndef TILE_H_
 #define TILE_H_
-#include "../GamePieces/GamePiece.h"
+#include "../../GamePieces/GamePiece.h"
 #include <algorithm>
 
 enum class TileType
@@ -31,6 +31,9 @@ public:
 	const bool isOccupied() const{
 		return !occupants.empty();
 	}
+	bool hasPlayer() const;
+	bool hasEnemy() const;
+
 	const std::vector<GamePiece*>& getOccupants() const {
 		return occupants;
 	}

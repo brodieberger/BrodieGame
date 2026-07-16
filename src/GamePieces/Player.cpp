@@ -8,10 +8,11 @@
 #include <iostream>
 #include "Player.h"
 
-Player::Player() : GamePiece()
-{
+Player::Player(Coord spawnCoord)
+: GamePiece(spawnCoord){
 	setPieceType(PieceType::Player);
 	setName("Player");
+	setCoord(spawnCoord);
 	setHP(100);
 }
 

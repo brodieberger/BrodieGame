@@ -7,9 +7,9 @@
 #include <string>
 #include <iostream>
 #include "PlayerFactory.h"
-#include "../GamePieces/Player.h"
+#include "../Player.h"
 #include "EnemyFactory.h"
 
-std::unique_ptr<GamePiece> PlayerFactory::create() const {
-    return std::make_unique<Player>();
+std::unique_ptr<GamePiece> PlayerFactory::create(Coord spawnCoord) const {
+    return std::make_unique<Player>(spawnCoord);
 }

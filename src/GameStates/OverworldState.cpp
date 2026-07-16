@@ -7,71 +7,85 @@
 
 #include "OverworldState.h"
 #include <iostream>
+#include "OverworldState.h"
+#include "../GameWorld.h"
+#include "../Renderer.h"
+#include "../GameStates/GameStateContext.h"
+
 
 OverworldState::OverworldState(
-		EnemyManager& enemyManager,
-		Renderer& renderer
+    GameWorld& gameWorld,
+    Renderer& renderer,
+    GameStateContext& context
 )
-	: GameState(enemyManager, renderer)
+    : GameState(gameWorld, renderer, context)
 {
-	renderer.setAlertText("Use the arrow keys to move!");
-	renderer.renderTiles(grid);
-	createEnemy();
+	//DEBUG SPAWN
+	createEnemy({3,3});
+
+    Tile& tile = gameWorld.getGrid().getTileByCoords(gameWorld.getEnemyManager().getPlayer()->getCoord());
+    gameWorld.getGrid().movePiece(gameWorld.getEnemyManager().getPlayer(), tile);
+
+    gameWorld.getGrid().getTileByCoords({5,2}).setTileType(TileType::NonWalkable);
+    gameWorld.getGrid().getTileByCoords({5,3}).setTileType(TileType::NonWalkable);
+    gameWorld.getGrid().getTileByCoords({6,2}).setTileType(TileType::NonWalkable);
+    gameWorld.getGrid().getTileByCoords({6,3}).setTileType(TileType::NonWalkable);
 }
 
 void OverworldState::update() {
-
 	//TODO for each enemy. Run their overworld update function.
 
-	renderer.renderTiles(grid);
-	incrementTurnCounter();
+	if (gameWorld.getGrid().checkForCombat())
+	{
+	    stateContext.enterBattle();
+	}
 };
 
 void OverworldState::render() {
-	renderer.setUpperText("Current Turn: " + std::to_string(getTurnCounter()));
+	renderer.setUpperText("Current Turn: " + std::to_string(gameWorld.getTurnCounter()));
 	renderer.setLevelText("Overworld");
+	renderer.renderTiles(gameWorld.getGrid());
 };
 
 void OverworldState::handleInput(int keyPressed) {
-	keyPressed = keyPressed - 262; //Convert to enum in header file.
-	Direction direction = static_cast<Direction>(keyPressed);
 
-	Tile* tileToMoveTo = handleMovement(enemyManager.getPlayer(), direction);
+	if (keyPressed == KEY_Z){
+		createEnemy({1,1});
+	}
+
+	Tile* tileToMoveTo = handleMovement(gameWorld.getEnemyManager().getPlayer(), keyPressed);
 
 	if (tileToMoveTo)
 	{
-	    grid.movePiece(enemyManager.getPlayer(), *tileToMoveTo);
+		gameWorld.getGrid().movePiece(gameWorld.getEnemyManager().getPlayer(), *tileToMoveTo);
 	    update();
 	}
 
-	for (auto& enemy : enemyManager.getEnemyList())
-	{
-	    if (!enemy->getIsAlive())
-	    {
-	        grid.removePiece(enemy.get());
-	    }
-	}
-
-	enemyManager.removeDeadEnemies();
+	gameWorld.removeDeadEnemies();
 	render();
 };
 
-Tile* OverworldState::handleMovement(GamePiece* gamepiece, Direction direction)
+Tile* OverworldState::handleMovement(GamePiece* gamepiece, int keyPressed)
 {
+	renderer.setAlertText("Use the arrow keys to move!");
     Coord newCoord = gamepiece->getCoord();
 
-    switch (direction)
+    switch (keyPressed)
     {
-        case Direction::Up:    --newCoord.y; break;
-        case Direction::Down:  ++newCoord.y; break;
-        case Direction::Left:  --newCoord.x; break;
-        case Direction::Right: ++newCoord.x; break;
+        case KEY_UP:    --newCoord.y; break;
+        case KEY_DOWN:  ++newCoord.y; break;
+        case KEY_LEFT:  --newCoord.x; break;
+        case KEY_RIGHT: ++newCoord.x; break;
     }
 
-    if (!grid.isValidCoord(newCoord))
+    if (!gameWorld.getGrid().isValidCoord(newCoord))
         return nullptr;
 
-    Tile& newTile = grid.getTileByCoords(newCoord);
+    Tile& newTile = gameWorld.getGrid().getTileByCoords(newCoord);
+
+    if (newTile.getCoord().x == gamepiece->getCoord().x && newTile.getCoord().y == gamepiece->getCoord().y){
+    	return nullptr;
+    }
 
     if (newTile.getTileType() == TileType::NonWalkable)
         return nullptr;
@@ -79,8 +93,8 @@ Tile* OverworldState::handleMovement(GamePiece* gamepiece, Direction direction)
     return &newTile;
 }
 
-void OverworldState::createEnemy(){
-	GamePiece* enemy = enemyManager.spawnEnemy();
-	Tile& tile = grid.getTileByCoords(enemy->getCoord());
-	grid.movePiece(enemy, tile);
+void OverworldState::createEnemy(Coord spawnCoord){
+	GamePiece* enemy = gameWorld.getEnemyManager().spawnEnemy(spawnCoord);
+	Tile& tile = gameWorld.getGrid().getTileByCoords(spawnCoord);
+	gameWorld.getGrid().movePiece(enemy, tile);
 }

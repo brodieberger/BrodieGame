@@ -6,11 +6,11 @@
  */
 
 #include <memory>
-#include "../GamePieces/Zombie.h"
+#include "../Zombie.h"
 #include "EnemyFactory.h"
 
 // Use this to spawn multiple types. If the zombie limit is reached spawn skeletons or something
 
-std::unique_ptr<GamePiece> EnemyFactory::create() const {
-    return std::make_unique<Zombie>();
+std::unique_ptr<GamePiece> EnemyFactory::create(Coord spawnCoord) const {
+    return std::make_unique<Zombie>(spawnCoord);
 }

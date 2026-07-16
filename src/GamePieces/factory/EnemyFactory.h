@@ -11,7 +11,7 @@
 
 class EnemyFactory : public GamePieceFactory {
 public:
-    std::unique_ptr<GamePiece> create() const override;
+    std::unique_ptr<GamePiece> create(Coord spawnCoord) const override;
 };
 
 #endif /* FACTORY_ENEMYFACTORY_H_ */

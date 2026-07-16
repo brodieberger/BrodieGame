@@ -12,7 +12,7 @@
 
 class Player : public GamePiece{
 public:
-	Player();
+	Player(Coord spawnCoord);
 	Action attack(GamePiece* target) override;
 	Action receiveAttack() override;
 };

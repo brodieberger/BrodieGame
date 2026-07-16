@@ -16,7 +16,7 @@
 
 class BattleState : public GameState {
 public:
-	BattleState(EnemyManager& enemyManager, Renderer& renderer, ActionProcessor& actionProcessor);
+	BattleState(GameWorld& gameWorld, Renderer& renderer, GameStateContext& gameStateContext, ActionProcessor& actionProcessor);
 	virtual ~BattleState();
 
     void update() override;

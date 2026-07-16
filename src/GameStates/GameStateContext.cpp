@@ -7,14 +7,43 @@
 
 #include "GameStateContext.h"
 
-void GameStateContext::setState(GameState* state) {
-	this->state = state;
+
+GameStateContext::GameStateContext(
+    GameWorld& world,
+    Renderer& renderer,
+    ActionProcessor& processor)
+{
+    overworldState = std::make_unique<OverworldState>(
+        world,
+        renderer,
+        *this
+    );
+
+    battleState = std::make_unique<BattleState>(
+        world,
+        renderer,
+		*this,
+		processor
+    );
+
+    state = overworldState.get();
 }
+
 void GameStateContext::update() {
 	state->update();
 }
 void GameStateContext::render() {
 	state->render();
+}
+
+void GameStateContext::enterBattle()
+{
+    state = battleState.get();
+}
+
+void GameStateContext::enterOverworld()
+{
+    state = overworldState.get();
 }
 
 void GameStateContext::handleInput(int keyPressed) {

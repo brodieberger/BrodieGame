@@ -8,16 +8,11 @@
 #include <iostream>
 #include "Zombie.h"
 
-Zombie::Zombie()
-: GamePiece() {
-
-	Coord newCoord;
-	newCoord.x = 1;
-	newCoord.y = 1;
-	setCoord(newCoord);
-
+Zombie::Zombie(Coord spawnCoord)
+: GamePiece(spawnCoord) {
 	setPieceType(PieceType::Zombie);
 	setName("Zombie");
+	setCoord(spawnCoord);
 	setHP(10);
 	std::cout << "zombie spawned\n";
 }

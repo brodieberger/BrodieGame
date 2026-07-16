@@ -9,7 +9,6 @@
 #define GRID_H_
 #include <vector>
 #include "Tile.h"
-#include "../GamePieces/GamePiece.h"
 
 class Grid {
 public:
@@ -26,10 +25,11 @@ public:
 	void movePiece(GamePiece* gamepiece, Tile& destination);
 	void removePiece(GamePiece* piece);
 	bool isValidCoord(Coord coord) const;
+	Tile* checkForCombat();
 
 private:
 	std::vector<std::vector<Tile>> grid;
-	static const int GRIDWIDTH = 5;
+	static const int GRIDWIDTH = 12;
 	static const int GRIDHEIGHT = 5;
 };
 

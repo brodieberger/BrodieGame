@@ -7,18 +7,22 @@
 
 #ifndef GAMESTATE_H_
 #define GAMESTATE_H_
-#include "../Renderer.h"
-#include "../EnemyManager.h"
+
+class GameWorld;
+class Renderer;
+class GameStateContext;
 
 class GameState
 {
 public:
     GameState(
-        EnemyManager& enemyManager,
-        Renderer& renderer
+        GameWorld& gameWorld,
+        Renderer& renderer,
+        GameStateContext& context
     )
-        : enemyManager(enemyManager),
-          renderer(renderer)
+        : gameWorld(gameWorld),
+          renderer(renderer),
+          stateContext(context)
     {}
 
     virtual ~GameState() = default;
@@ -26,19 +30,11 @@ public:
     virtual void update() = 0;
     virtual void render() = 0;
     virtual void handleInput(int keyPressed) = 0;
-    int getTurnCounter(){
-    	return turnCounter;
-    }
-    void incrementTurnCounter(){
-    	turnCounter += 1;
-    }
-
-private:
-    int turnCounter{1};
 
 protected:
-    EnemyManager& enemyManager;
+    GameWorld& gameWorld;
     Renderer& renderer;
+    GameStateContext& stateContext;
 };
 
 #endif /* GAMESTATE_H_ */

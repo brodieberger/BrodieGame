@@ -10,9 +10,9 @@
 
 #include <memory>
 #include <vector>
-#include "GamePieces/GamePiece.h"
-#include "factory/EnemyFactory.h"
-#include "factory/PlayerFactory.h"
+#include "../GamePieces/GamePiece.h"
+#include "../GamePieces/factory/EnemyFactory.h"
+#include "../GamePieces/factory/PlayerFactory.h"
 
 class EnemyManager {
 public:
@@ -27,7 +27,7 @@ public:
     	return player.get();
     }
     void removeDeadEnemies();
-    GamePiece* spawnEnemy();
+    GamePiece* spawnEnemy(Coord spawnCoord);
     void update();
 
 private:

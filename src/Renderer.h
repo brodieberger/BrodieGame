@@ -14,7 +14,7 @@
 #include "raylib.h"
 #include "GamePieces/GamePiece.h"
 #include "Action.h"
-#include "Map/Grid.h"
+#include "World/Map/Grid.h"
 
 class Renderer {
 public:
@@ -52,7 +52,7 @@ public:
 	void buildAlertText();
 	void drawEnemies(std::vector<std::unique_ptr<GamePiece>>&);
 	void drawHud();
-	void renderTiles(Grid&);
+	void renderTiles(const Grid&);
 
 private:
 	std::string upperText;

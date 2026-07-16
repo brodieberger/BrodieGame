@@ -11,7 +11,8 @@
 EnemyManager::EnemyManager(){
     playerFactory 	= std::make_unique<PlayerFactory>();
     enemyFactory 	= std::make_unique<EnemyFactory>();
-    player = playerFactory->create();
+    Coord spawnCoord (0,0);
+    player = playerFactory->create(spawnCoord);
 
 }
 
@@ -32,9 +33,9 @@ void EnemyManager::removeDeadEnemies()
         enemyList.end());
 }
 
-GamePiece* EnemyManager::spawnEnemy()
+GamePiece* EnemyManager::spawnEnemy(Coord spawnCoord)
 {
-    auto enemy = enemyFactory->create();
+    auto enemy = enemyFactory->create(spawnCoord);
     GamePiece* ptr = enemy.get();
 
     enemyList.push_back(std::move(enemy));

@@ -21,19 +21,52 @@ Grid::Grid()
     }
 }
 
-void Grid::printGrid(){
-	for (std::vector<Tile> row : grid){
-		for (Tile tile : row){
-			if (tile.isOccupied()){
-				std::cout << "1 ";
-			}
-			else{
-				std::cout << "0 ";
-			}
-		}
-		std::cout << "\n";
-	}
-	std::cout << "\n";
+Tile* Grid::checkForCombat()
+{
+    for (auto& row : grid)
+    {
+        for (auto& tile : row)
+        {
+            if (tile.hasPlayer() && tile.hasEnemy())
+            {
+                return &tile;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+void Grid::printGrid()
+{
+	std::cout << "\n\n\n";
+    for (const auto& row : grid)
+    {
+        for (const auto& tile : row)
+        {
+            if (tile.hasPlayer() && tile.hasEnemy())
+            {
+                std::cout << "! ";
+            }
+            else if (tile.hasPlayer())
+            {
+                std::cout << "P ";
+            }
+            else if (tile.hasEnemy())
+            {
+                std::cout << "E ";
+            }
+            else if (tile.getTileType() == TileType::NonWalkable)
+            {
+                std::cout << "# ";
+            }
+            else
+            {
+                std::cout << ". ";
+            }
+        }
+        std::cout << "\n";
+    }
 }
 
 Tile& Grid::getTileByCoords(Coord coord) {

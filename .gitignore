@@ -1,0 +1,19 @@
+# Build output
+Debug/
+Release/
+build/
+
+# Object files
+*.o
+*.obj
+
+# Dependency files
+*.d
+
+# Executables
+BrodieGame
+*.exe
+
+# Editor files
+*~
+*.swp

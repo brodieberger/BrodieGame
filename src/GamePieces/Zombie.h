@@ -12,7 +12,7 @@
 
 class Zombie : public GamePiece{
 public:
-	Zombie();
+	Zombie(Coord spawnCoord);
 	Action attack(GamePiece* target) override;
 	Action receiveAttack() override;
 };

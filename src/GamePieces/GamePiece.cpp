@@ -8,7 +8,7 @@
 #include <iostream>
 #include "GamePiece.h"
 
-GamePiece::GamePiece()
+GamePiece::GamePiece(Coord spawnCoord)
     : pieceType(PieceType::Unknown),
       m_HP(0),
       coord{0, 0}

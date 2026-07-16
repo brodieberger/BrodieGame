@@ -11,17 +11,22 @@
 #include <string>
 #include "raylib.h"
 #include "../Action.h"
+#include "BattleState.h"
+#include "../GameWorld.h"
+#include "../Renderer.h"
+#include "../GameStates/GameStateContext.h"
 
 BattleState::BattleState(
-    EnemyManager& enemyManager,
+    GameWorld& gameWorld,
     Renderer& renderer,
+    GameStateContext& context,
     ActionProcessor& actionProcessor
 )
-    : GameState(enemyManager, renderer),
+    : GameState(gameWorld, renderer, context),
+      battleTurnCounter(1),
+      selectedEnemy(0),
       actionProcessor(actionProcessor)
 {
-    battleTurnCounter = 1;
-    selectedEnemy = 0;
 }
 
 BattleState::~BattleState() {
@@ -29,23 +34,34 @@ BattleState::~BattleState() {
 }
 
 void BattleState::handleInput(int keyPressed) {
+
+	gameWorld.removeDeadEnemies();
+
+	if (actionProcessor.busy()){
+		return;
+	}
+
 	renderer.setAlertText("Press SPACE to attack!");
-	auto& enemyList = enemyManager.getEnemyList();
+	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
     for (auto& enemy : enemyList){
     	enemy->setOutlineColor(BLACK);
     }
 
 	bool advanceTurn {false};
-    if (enemyList.empty())
-        return;
+    if (enemyList.empty()){
+    	stateContext.enterOverworld();
+    	return;
+    }
+
+
     if (keyPressed == KEY_RIGHT) {
         selectedEnemy = (selectedEnemy + 1) % enemyList.size();
     }
     else if (keyPressed == KEY_LEFT) {
         selectedEnemy = (selectedEnemy + enemyList.size() - 1) % enemyList.size();
     }
-    if (keyPressed == KEY_SPACE && !actionProcessor.busy() ) {
-    	Action action = enemyManager.getPlayer()->attack(enemyList[selectedEnemy].get());
+    if (keyPressed == KEY_SPACE ) {
+    	Action action = gameWorld.getEnemyManager().getPlayer()->attack(enemyList[selectedEnemy].get());
 		actionProcessor.queueActionBack(action);
 		advanceTurn = true;
 	}
@@ -56,19 +72,20 @@ void BattleState::handleInput(int keyPressed) {
 }
 
 void BattleState::update() {
-	auto& enemyList = enemyManager.getEnemyList();
+	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
 	for (auto& enemy : enemyList){
 		if(enemy->getIsAlive()){
-	    	Action action = (enemy->attack(enemyManager.getPlayer()));
+	    	Action action = (enemy->attack(gameWorld.getEnemyManager().getPlayer()));
 			actionProcessor.queueActionBack(action);
 		}
 	}
-    battleTurnCounter += 1;
-    incrementTurnCounter();
+
+	battleTurnCounter += 1;
+
 }
 
 void BattleState::render() {
-	auto& enemyList = enemyManager.getEnemyList();
+	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
     if (enemyList.empty()) {
         selectedEnemy = 0;
     }
@@ -80,10 +97,7 @@ void BattleState::render() {
         	enemyList[selectedEnemy]->setOutlineColor(GOLD);
         }
     }
-
-	renderer.setUpperText(
-		"Current Turn: " + std::to_string(battleTurnCounter)
-	);
+	renderer.setUpperText("Current Turn: " + std::to_string(battleTurnCounter));
 	renderer.setLevelText("BATTLING");
 	renderer.drawEnemies(enemyList);
 };

@@ -8,29 +8,21 @@
 #ifndef OVERWORLDSTATE_H_
 #define OVERWORLDSTATE_H_
 #include "GameState.h"
+#include "GameStateContext.h"
 #include "../GamePieces/GamePiece.h"
-
-enum class Direction{
-	Right,
-	Left,
-	Down,
-	Up,
-};
+#include "../World/Map/Tile.h"
 
 class OverworldState : public GameState {
 public:
-	OverworldState(EnemyManager& enemyManager, Renderer& renderer);
+	OverworldState(GameWorld& gameWorld, Renderer& renderer, GameStateContext& gameStateContext);
 
     void update() override;
     void render() override;
     void handleInput(int keyPressed) override;
-    Tile* handleMovement(GamePiece* gamepiece, Direction direction);
+    Tile* handleMovement(GamePiece* gamepiece, int keyPressed);
 
     void renderTiles();
-    void createEnemy();
-
-private:
-    Grid grid;
+    void createEnemy(Coord spawnCoord);
 };
 
 #endif /* OVERWORLDSTATE_H_ */

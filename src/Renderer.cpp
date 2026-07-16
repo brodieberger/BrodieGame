@@ -61,9 +61,59 @@ void Renderer::drawEnemies(std::vector<std::unique_ptr<GamePiece>>& enemies) {
     }
 }
 
-// TODO MAKE THIS RENDER
-void Renderer::renderTiles(Grid& grid){
+void Renderer::renderTiles(const Grid& grid)
+{
+    const int tileSize = 72;
+    const int startX = 50;
+    const int startY = 50;
 
+    const auto& rows = grid.getGrid();
 
-	grid.printGrid();
+    for (size_t y = 0; y < rows.size(); ++y)
+    {
+        for (size_t x = 0; x < rows[y].size(); ++x)
+        {
+            const Tile& tile = rows[y][x];
+
+            int screenX = startX + x * tileSize;
+            int screenY = startY + y * tileSize;
+
+            // Draw the tile
+            Color color = (tile.getTileType() == TileType::Walkable)
+                ? DARKGREEN
+                : DARKGRAY;
+
+            DrawRectangle(screenX, screenY, tileSize, tileSize, color);
+            DrawRectangleLines(screenX, screenY, tileSize, tileSize, BLACK);
+
+            // Draw occupants
+            if (tile.hasPlayer())
+            {
+                DrawCircle(
+                    screenX + tileSize / 2,
+                    screenY + tileSize / 2,
+                    tileSize / 4,
+                    BLUE);
+            }
+
+            if (tile.hasEnemy())
+            {
+                DrawCircle(
+                    screenX + tileSize / 2,
+                    screenY + tileSize / 2,
+                    tileSize / 4,
+                    RED);
+            }
+
+            if (tile.hasPlayer() && tile.hasEnemy())
+            {
+                DrawText(
+                    "!",
+                    screenX + tileSize / 2 - 5,
+                    screenY + tileSize / 2 - 10,
+                    20,
+                    YELLOW);
+            }
+        }
+    }
 }

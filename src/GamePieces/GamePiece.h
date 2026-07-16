@@ -20,6 +20,7 @@ enum class PieceType{
 struct Coord{
 	int x;
 	int y;
+	Coord(int x, int y) : x(x), y(y) {}
 };
 
 class GamePiece{
@@ -32,7 +33,7 @@ private:
 	Color outlineColor = BLACK;
 
 public:
-    GamePiece();
+    GamePiece(Coord spawnCoord);
 	virtual ~GamePiece() = default;
 	virtual Action attack(GamePiece* target) = 0;
 	virtual Action receiveAttack() = 0;
