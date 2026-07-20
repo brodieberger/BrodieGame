@@ -11,6 +11,7 @@
 class GameWorld;
 class Renderer;
 class GameStateContext;
+class ActionProcessor;
 
 class GameState
 {
@@ -18,11 +19,13 @@ public:
     GameState(
         GameWorld& gameWorld,
         Renderer& renderer,
-        GameStateContext& context
+        GameStateContext& context,
+		ActionProcessor& actionProcessor
     )
         : gameWorld(gameWorld),
           renderer(renderer),
-          stateContext(context)
+          stateContext(context),
+		  actionProcessor(actionProcessor)
     {}
 
     virtual ~GameState() = default;
@@ -35,6 +38,7 @@ protected:
     GameWorld& gameWorld;
     Renderer& renderer;
     GameStateContext& stateContext;
+    ActionProcessor& actionProcessor;
 };
 
 #endif /* GAMESTATE_H_ */

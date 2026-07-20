@@ -37,6 +37,9 @@ public:
 	const std::vector<GamePiece*>& getOccupants() const {
 		return occupants;
 	}
+
+	std::vector<GamePiece*> getOccupantsWithoutPlayer(const GamePiece* player) const;
+
 	void addOccupant(GamePiece* gamePiece) {
 		occupants.push_back(gamePiece);
 	}

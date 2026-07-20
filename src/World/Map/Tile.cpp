@@ -42,3 +42,16 @@ bool Tile::hasEnemy() const
             return piece->getPieceType() == PieceType::Zombie;
         });
 }
+
+std::vector<GamePiece*> Tile::getOccupantsWithoutPlayer(const GamePiece* player) const {
+    std::vector<GamePiece*> result;
+    result.reserve(occupants.size());
+
+    for (GamePiece* occupant : occupants) {
+        if (occupant != player) {
+            result.push_back(occupant);
+        }
+    }
+
+    return result;
+}

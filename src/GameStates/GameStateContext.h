@@ -40,6 +40,10 @@ public:
     void render();
     void handleInput(int keyPressed);
 
+	const std::unique_ptr<OverworldState>& getOverworldState() const {
+		return overworldState;
+	}
+
 private:
     std::unique_ptr<OverworldState> overworldState;
     std::unique_ptr<BattleState> battleState;

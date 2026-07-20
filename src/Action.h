@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "raylib.h"
+#include "GameStates/GameState.h"
 
 class GamePiece;
 
@@ -20,6 +21,7 @@ enum class ActionStepType
 	SetOutlineColor,
 	Attack,
     ReceiveAttack,
+	CompleteTurn,
 };
 
 struct ActionStep
@@ -31,6 +33,7 @@ struct ActionStep
     double duration = 0;
     Color color;
 
+    GameState* gamestate;
     GamePiece* initiator;
     GamePiece* target;
 };
@@ -38,15 +41,18 @@ struct ActionStep
 class Action
 {
 public:
-	Action() = default;
+    Action() = default;
+
     void addMessage(GamePiece* initiator, std::string newText, Color color);
     void addDeathMessage(std::string newText, Color color);
     void setOutlineColor(GamePiece* target, Color color);
     void addReceiveAttack(GamePiece* target, int damage);
     void addAttack(GamePiece* target, GamePiece* initiator, int damage);
+    void addDelay(double duration);
+    void completeTurn(GameState* gamestate);
 
     std::vector<ActionStep>& getSteps(){
-    	return steps;
+        return steps;
     }
 
 private:

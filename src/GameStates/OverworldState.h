@@ -11,10 +11,12 @@
 #include "GameStateContext.h"
 #include "../GamePieces/GamePiece.h"
 #include "../World/Map/Tile.h"
+#include "../ActionProcessor.h"
+
 
 class OverworldState : public GameState {
 public:
-	OverworldState(GameWorld& gameWorld, Renderer& renderer, GameStateContext& gameStateContext);
+	OverworldState(GameWorld& gameWorld, Renderer& renderer, GameStateContext& gameStateContext, ActionProcessor& actionProcessor);
 
     void update() override;
     void render() override;
@@ -23,6 +25,7 @@ public:
 
     void renderTiles();
     void createEnemy(Coord spawnCoord);
+
 };
 
 #endif /* OVERWORLDSTATE_H_ */

@@ -29,9 +29,9 @@ public:
 
 private:
 	int battleTurnCounter;
+	bool shouldUpdateWorldMap;
 	size_t selectedEnemy;
 	std::vector<std::unique_ptr<GamePiece>> combatantList;
-    ActionProcessor& actionProcessor;
 };
 
 #endif /* BATTLESTATE_H_ */

@@ -22,10 +22,9 @@ BattleState::BattleState(
     GameStateContext& context,
     ActionProcessor& actionProcessor
 )
-    : GameState(gameWorld, renderer, context),
+    : GameState(gameWorld, renderer, context, actionProcessor),
       battleTurnCounter(1),
-      selectedEnemy(0),
-      actionProcessor(actionProcessor)
+      selectedEnemy(0)
 {
 }
 
@@ -42,7 +41,11 @@ void BattleState::handleInput(int keyPressed) {
 	}
 
 	renderer.setAlertText("Press SPACE to attack!");
-	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
+	GamePiece* player = gameWorld.getEnemyManager().getPlayer();
+    Grid& grid = gameWorld.getGrid();
+    Tile& combatTile = grid.getTileByCoords(player->getCoord());
+
+    auto enemyList = combatTile.getOccupantsWithoutPlayer(player);
     for (auto& enemy : enemyList){
     	enemy->setOutlineColor(BLACK);
     }
@@ -61,7 +64,7 @@ void BattleState::handleInput(int keyPressed) {
         selectedEnemy = (selectedEnemy + enemyList.size() - 1) % enemyList.size();
     }
     if (keyPressed == KEY_SPACE ) {
-    	Action action = gameWorld.getEnemyManager().getPlayer()->attack(enemyList[selectedEnemy].get());
+    	Action action = gameWorld.getEnemyManager().getPlayer()->attack(enemyList[selectedEnemy]);
 		actionProcessor.queueActionBack(action);
 		advanceTurn = true;
 	}
@@ -72,20 +75,31 @@ void BattleState::handleInput(int keyPressed) {
 }
 
 void BattleState::update() {
-	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
+
+	GamePiece* player = gameWorld.getEnemyManager().getPlayer();
+    Grid& grid = gameWorld.getGrid();
+    Tile& combatTile = grid.getTileByCoords(player->getCoord());
+    auto enemyList = combatTile.getOccupantsWithoutPlayer(player);
+
 	for (auto& enemy : enemyList){
 		if(enemy->getIsAlive()){
-	    	Action action = (enemy->attack(gameWorld.getEnemyManager().getPlayer()));
+	    	Action action = (enemy->attack(player));
 			actionProcessor.queueActionBack(action);
 		}
 	}
 
-	battleTurnCounter += 1;
-
+	Action updateGameworld;
+	updateGameworld.completeTurn(stateContext.getOverworldState().get());
+	actionProcessor.queueActionBack(updateGameworld);
 }
 
 void BattleState::render() {
-	auto& enemyList = gameWorld.getEnemyManager().getEnemyList();
+	renderer.renderTiles(gameWorld.getGrid(), gameWorld.getEnemyManager().getPlayer());
+	GamePiece* player = gameWorld.getEnemyManager().getPlayer();
+    Grid& grid = gameWorld.getGrid();
+    Tile& combatTile = grid.getTileByCoords(player->getCoord());
+    auto enemyList = combatTile.getOccupantsWithoutPlayer(player);
+
     if (enemyList.empty()) {
         selectedEnemy = 0;
     }
@@ -97,7 +111,7 @@ void BattleState::render() {
         	enemyList[selectedEnemy]->setOutlineColor(GOLD);
         }
     }
-	renderer.setUpperText("Current Turn: " + std::to_string(battleTurnCounter));
+	renderer.setUpperText("Current Turn: " + std::to_string(gameWorld.getTurnCounter()));
 	renderer.setLevelText("BATTLING");
 	renderer.drawEnemies(enemyList);
 };

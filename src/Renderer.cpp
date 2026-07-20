@@ -7,6 +7,7 @@
 
 #include "Renderer.h"
 #include <iostream>
+#include <cmath>
 #include <string>
 
 Renderer::Renderer() {
@@ -34,7 +35,7 @@ void Renderer::renderHUD(){
 
 }
 
-void Renderer::drawEnemies(std::vector<std::unique_ptr<GamePiece>>& enemies) {
+void Renderer::drawEnemies(const std::vector<GamePiece*>& enemies) {
     const int boxSize = 195;
     const int numEnemies = enemies.size();
 
@@ -61,7 +62,7 @@ void Renderer::drawEnemies(std::vector<std::unique_ptr<GamePiece>>& enemies) {
     }
 }
 
-void Renderer::renderTiles(const Grid& grid)
+void Renderer::renderTiles(const Grid& grid, const GamePiece* player)
 {
     const int tileSize = 72;
     const int startX = 50;
@@ -78,7 +79,7 @@ void Renderer::renderTiles(const Grid& grid)
             int screenX = startX + x * tileSize;
             int screenY = startY + y * tileSize;
 
-            // Draw the tile
+            // Draw tile
             Color color = (tile.getTileType() == TileType::Walkable)
                 ? DARKGREEN
                 : DARKGRAY;
@@ -86,7 +87,9 @@ void Renderer::renderTiles(const Grid& grid)
             DrawRectangle(screenX, screenY, tileSize, tileSize, color);
             DrawRectangleLines(screenX, screenY, tileSize, tileSize, BLACK);
 
-            // Draw occupants
+            auto enemies = tile.getOccupantsWithoutPlayer(player);
+            const size_t enemyCount = enemies.size();
+
             if (tile.hasPlayer())
             {
                 DrawCircle(
@@ -94,25 +97,46 @@ void Renderer::renderTiles(const Grid& grid)
                     screenY + tileSize / 2,
                     tileSize / 4,
                     BLUE);
-            }
 
-            if (tile.hasEnemy())
-            {
-                DrawCircle(
-                    screenX + tileSize / 2,
-                    screenY + tileSize / 2,
-                    tileSize / 4,
-                    RED);
+                if (enemyCount > 0)
+                {
+                    DrawText(
+                        "!",
+                        screenX + tileSize / 2 - 5,
+                        screenY + tileSize / 2 - 10,
+                        20,
+                        YELLOW);
+                }
             }
-
-            if (tile.hasPlayer() && tile.hasEnemy())
+            else
             {
-                DrawText(
-                    "!",
-                    screenX + tileSize / 2 - 5,
-                    screenY + tileSize / 2 - 10,
-                    20,
-                    YELLOW);
+                if (enemyCount == 1)
+                {
+                    DrawCircle(
+                        screenX + tileSize / 2,
+                        screenY + tileSize / 2,
+                        tileSize / 4,
+                        RED);
+                }
+                else if (enemyCount > 1)
+                {
+                    const float centerX = screenX + tileSize / 2.0f;
+                    const float centerY = screenY + tileSize / 2.0f;
+
+                    const float orbitRadius = tileSize / 6.0f;
+                    const float enemyRadius = std::min(18.0f, 26.0f / enemyCount);
+
+                    for (size_t i = 0; i < enemyCount; ++i)
+                    {
+                        float angle = (2.0f * PI * i) / enemyCount;
+
+                        DrawCircle(
+                            centerX + orbitRadius * cosf(angle),
+                            centerY + orbitRadius * sinf(angle),
+                            enemyRadius,
+                            RED);
+                    }
+                }
             }
         }
     }

@@ -16,7 +16,8 @@ GameStateContext::GameStateContext(
     overworldState = std::make_unique<OverworldState>(
         world,
         renderer,
-        *this
+        *this,
+		processor
     );
 
     battleState = std::make_unique<BattleState>(

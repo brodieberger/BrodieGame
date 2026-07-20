@@ -50,9 +50,9 @@ public:
 	}
 
 	void buildAlertText();
-	void drawEnemies(std::vector<std::unique_ptr<GamePiece>>&);
+	void drawEnemies(const std::vector<GamePiece*>& enemies);
 	void drawHud();
-	void renderTiles(const Grid&);
+	void renderTiles(const Grid& grid, const GamePiece* player);
 
 private:
 	std::string upperText;

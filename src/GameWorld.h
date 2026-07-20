@@ -29,6 +29,10 @@ public:
 		return turnCounter;
 	}
 
+	void incrementTurnCounter() {
+		turnCounter++;
+	}
+
 private:
 	EnemyManager enemyManager;
 	Grid grid;

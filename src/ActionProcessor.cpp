@@ -8,6 +8,7 @@
 #include "ActionProcessor.h"
 #include "raylib.h"
 #include "Renderer.h"
+#include <iostream>
 
 ActionProcessor::ActionProcessor(Renderer& renderer)
     : renderer(renderer)
@@ -153,6 +154,16 @@ bool ActionProcessor::executeStep(ActionStep& step)
     		return true;
 		}
     	return false;
-	}
-    return false;
+
+    case ActionStepType::CompleteTurn:
+    {
+        GameState* gamestate = step.gamestate;
+        if (gamestate)
+            gamestate->update();
+        return true;
+    }
+
+    default:
+        return false;
+    }
 }

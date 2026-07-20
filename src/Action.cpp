@@ -76,3 +76,11 @@ void Action::addReceiveAttack(GamePiece* target, int damage)
 
     steps.push_back(step);
 }
+
+void Action::completeTurn(GameState* gamestate){
+	ActionStep step;
+	step.type = ActionStepType::CompleteTurn;
+	step.gamestate = gamestate;
+    steps.push_back(step);
+
+}
