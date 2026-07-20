@@ -35,6 +35,7 @@ OverworldState::OverworldState(
 void OverworldState::update() {
 	//TODO for each enemy. Run their overworld update function.
 
+
 	if (gameWorld.getGrid().checkForCombat())
 	{
 	    stateContext.enterBattle();
@@ -44,6 +45,7 @@ void OverworldState::update() {
 void OverworldState::render() {
 	renderer.setUpperText("Current Turn: " + std::to_string(gameWorld.getTurnCounter()));
 	renderer.setLevelText("Overworld");
+	renderer.setAlertText("Use the arrow keys to move!");
 	renderer.renderTiles(gameWorld.getGrid());
 };
 
@@ -54,7 +56,7 @@ void OverworldState::handleInput(int keyPressed) {
 	}
 
 	GamePiece* player = gameWorld.getEnemyManager().getPlayer();
-	Tile* tileToMoveTo = handleMovement(player, keyPressed);
+	Tile* tileToMoveTo = gameWorld.getGrid().handleMovement(player, keyPressed);
 
 	if (tileToMoveTo)
 	{
@@ -65,34 +67,6 @@ void OverworldState::handleInput(int keyPressed) {
 	gameWorld.removeDeadEnemies();
 	render();
 };
-
-Tile* OverworldState::handleMovement(GamePiece* gamepiece, int keyPressed)
-{
-	renderer.setAlertText("Use the arrow keys to move!");
-    Coord newCoord = gamepiece->getCoord();
-
-    switch (keyPressed)
-    {
-        case KEY_UP:    --newCoord.y; break;
-        case KEY_DOWN:  ++newCoord.y; break;
-        case KEY_LEFT:  --newCoord.x; break;
-        case KEY_RIGHT: ++newCoord.x; break;
-    }
-
-    if (!gameWorld.getGrid().isValidCoord(newCoord))
-        return nullptr;
-
-    Tile& newTile = gameWorld.getGrid().getTileByCoords(newCoord);
-
-    if (newTile.getCoord().x == gamepiece->getCoord().x && newTile.getCoord().y == gamepiece->getCoord().y){
-    	return nullptr;
-    }
-
-    if (newTile.getTileType() == TileType::NonWalkable)
-        return nullptr;
-
-    return &newTile;
-}
 
 void OverworldState::createEnemy(Coord spawnCoord){
 	GamePiece* enemy = gameWorld.getEnemyManager().spawnEnemy(spawnCoord);

@@ -26,6 +26,7 @@ public:
 	void removePiece(GamePiece* piece);
 	bool isValidCoord(Coord coord) const;
 	Tile* checkForCombat();
+	Tile* handleMovement(GamePiece* gamepiece, int keyPressed);
 
 private:
 	std::vector<std::vector<Tile>> grid;

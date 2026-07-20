@@ -21,6 +21,33 @@ Grid::Grid()
     }
 }
 
+Tile* Grid::handleMovement(GamePiece* gamepiece, int keyPressed)
+{
+    Coord newCoord = gamepiece->getCoord();
+
+    switch (keyPressed)
+    {
+        case KEY_UP:    --newCoord.y; break;
+        case KEY_DOWN:  ++newCoord.y; break;
+        case KEY_LEFT:  --newCoord.x; break;
+        case KEY_RIGHT: ++newCoord.x; break;
+    }
+
+    if (!isValidCoord(newCoord))
+        return nullptr;
+
+    Tile& newTile = getTileByCoords(newCoord);
+
+    if (newTile.getCoord().x == gamepiece->getCoord().x && newTile.getCoord().y == gamepiece->getCoord().y){
+    	return nullptr;
+    }
+
+    if (newTile.getTileType() == TileType::NonWalkable)
+        return nullptr;
+
+    return &newTile;
+}
+
 Tile* Grid::checkForCombat()
 {
     for (auto& row : grid)
